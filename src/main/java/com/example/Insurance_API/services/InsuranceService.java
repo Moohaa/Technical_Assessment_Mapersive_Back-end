@@ -15,35 +15,18 @@ import java.util.List;
 
 @Service
 public class InsuranceService {
-
-
     private final InsuranceRepository insuranceRepository;
 
     public InsuranceService(InsuranceRepository insuranceRepository) {
         this.insuranceRepository = insuranceRepository;
     }
-
-    public CommonResponse getInsurances(String pageNumber,String pageSize){
-
-        CommonResponse res=null;
-        Pageable page = PageRequest.of(Integer.valueOf(pageNumber), Integer.valueOf(pageSize));
-        Page<Insurance> insurances=  this.insuranceRepository.findAll(page);
-
-        res=CommonResponse.generateResponse(CommonResponse.ResponseType.SUCCESS,"",insurances.getContent());
-
-
-        return  res;
+    public List<Insurance> getInsurances(Long customerId) {
+        List<Insurance> insurances= this.insuranceRepository.findAllByCustomerId(customerId);
+        return  insurances;
     }
-
-    public CommonResponse getInsurance(@PathVariable String id) {
-
-        return null;
-    }
-
     public void addInsuranceRecord(Insurance insurance){
         this.insuranceRepository.save(insurance);
     }
-
 
 
 }

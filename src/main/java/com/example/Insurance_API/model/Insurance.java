@@ -2,10 +2,7 @@ package com.example.Insurance_API.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,7 +19,7 @@ public class Insurance {
     @Id
     @Column(name = "Policy_id")
     @JsonProperty("Policy_id")
-    private  Long id;
+    private  Long policyId;
 
     @Column(name = "Date_of_Purchase")
     @JsonProperty("Date_of_Purchase")
@@ -50,18 +47,8 @@ public class Insurance {
     private int collision;
     private int comprehensive;
 
-    @Column(name="Customer_Gender")
-    @JsonProperty("Customer_Gender")
-    private String customerGender;
 
-    @Column(name="Customer_Income_group")
-    @JsonProperty("Customer_Income_group")
-    private String customer_Income_group;
-    @Column(name="Customer_Region")
-    @JsonProperty("Customer_Region")
-    private String customer_Region;
-    @Column(name="Customer_Marital_status")
-    @JsonProperty("Customer_Marital_status")
-    private int customer_Marital_status;
+
+
 
 }

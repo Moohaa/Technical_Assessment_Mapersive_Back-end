@@ -1,7 +1,7 @@
 package com.example.Insurance_API.services;
 
 
-import com.example.Insurance_API.model.Insurance;
+import com.example.Insurance_API.model.dto.JsonData;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -16,9 +16,11 @@ import java.util.List;
 public class DbPopulationService implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DbPopulationService.class);
     private final InsuranceService insuranceService;
+    private final CustomerService customerService;
 
-    public DbPopulationService(InsuranceService insuranceService) {
+    public DbPopulationService(InsuranceService insuranceService, CustomerService customerService) {
         this.insuranceService = insuranceService;
+        this.customerService = customerService;
     }
 
     @Override
@@ -26,11 +28,13 @@ public class DbPopulationService implements CommandLineRunner {
         log.info("Start populating the db");
 
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Insurance> items = objectMapper.readValue(new File("src/main/resources/JsonData/Insurance-Data.json"), new TypeReference<>() {
+        List<JsonData> items = objectMapper.readValue(new File("src/main/resources/JsonData/Insurance-Data.json"), new TypeReference<>() {
         });
 
-        items.stream().forEach(insurance->{
-            this.insuranceService.addInsuranceRecord(insurance);
+        items.stream().forEach(item->{
+            this.insuranceService.addInsuranceRecord(item.toInsurance());
+            this.customerService.addCustomerRecord(item.toCustomer());
+
         });
         log.info("End populating the db");
     }

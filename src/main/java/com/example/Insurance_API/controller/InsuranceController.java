@@ -1,6 +1,7 @@
 package com.example.Insurance_API.controller;
 
 
+import com.example.Insurance_API.services.CustomerService;
 import com.example.Insurance_API.services.InsuranceService;
 import com.example.Insurance_API.utils.CommonResponse;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,19 +14,33 @@ import org.springframework.web.bind.annotation.RestController;
 public class InsuranceController {
     private final InsuranceService insuranceService;
 
-    public InsuranceController(InsuranceService insuranceService) {
+    private  final CustomerService customerService;
+
+    public InsuranceController(InsuranceService insuranceService, CustomerService customerService) {
         this.insuranceService = insuranceService;
+        this.customerService = customerService;
     }
 
+    @GetMapping("/customersCounts")
+    public CommonResponse getCustomersCount() {
+        return CommonResponse.generateResponse(CommonResponse.ResponseType.SUCCESS,"",this.customerService.getCustomerCount());
+    }
+    @GetMapping("/customers")
+    public CommonResponse getInsurances(@RequestParam("pageNumber") String pageNumber, @RequestParam("pageSize") String pageSize,@RequestParam(value = "customer_id",required = false) String customer_id) {
+        return this.customerService.getCustomers(pageNumber,pageSize,customer_id);
+    }
     @GetMapping("/insurances")
-    public CommonResponse getInsurances(@RequestParam("pageNumber") String pageNumber, @RequestParam("pageSize") String pageSize) {
+    public CommonResponse getInsurance( @RequestParam("customer_id") String customerId) {
+       CommonResponse res=CommonResponse.generateResponse(CommonResponse.ResponseType.SUCCESS,"",
+               this.insuranceService.getInsurances(Long.valueOf(customerId)));
 
-        return this.insuranceService.getInsurances(pageNumber,pageSize);
+        return res;
     }
-    @GetMapping("/insurances/{id}")
-    public CommonResponse getInsurance(@PathVariable String id) {
-
-        return null;
+    @GetMapping("/customers/{id}")
+    public CommonResponse getCustomer( @PathVariable String id) {
+        CommonResponse  res =CommonResponse.generateResponse(CommonResponse.ResponseType.SUCCESS,"",
+                this.customerService.getCustomer(id));
+        return res;
     }
 
 
