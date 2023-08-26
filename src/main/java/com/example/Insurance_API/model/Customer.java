@@ -36,5 +36,4 @@ public class Customer {
     private String customer_Region;
 
     private  String policies;
-
 }
