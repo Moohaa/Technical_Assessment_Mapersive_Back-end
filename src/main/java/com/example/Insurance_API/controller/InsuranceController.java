@@ -21,16 +21,13 @@ public class InsuranceController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/customersCounts")
-    public CommonResponse getCustomersCount() {
-        return CommonResponse.generateResponse(CommonResponse.ResponseType.SUCCESS,"",this.customerService.getCustomerCount());
-    }
+
     @GetMapping("/customers")
-    public CommonResponse getInsurances(@RequestParam("pageNumber") String pageNumber, @RequestParam("pageSize") String pageSize,@RequestParam(value = "customer_id",required = false) String customer_id) {
+    public CommonResponse getCustomers(@RequestParam("pageNumber") String pageNumber, @RequestParam("pageSize") String pageSize,@RequestParam(value = "customer_id",required = false) String customer_id) {
         return this.customerService.getCustomers(pageNumber,pageSize,customer_id);
     }
     @GetMapping("/insurances")
-    public CommonResponse getInsurance( @RequestParam("customer_id") String customerId) {
+    public CommonResponse getInsurances( @RequestParam("customer_id") String customerId) {
        CommonResponse res=CommonResponse.generateResponse(CommonResponse.ResponseType.SUCCESS,"",
                this.insuranceService.getInsurances(Long.valueOf(customerId)));
 
@@ -41,6 +38,11 @@ public class InsuranceController {
         CommonResponse  res =CommonResponse.generateResponse(CommonResponse.ResponseType.SUCCESS,"",
                 this.customerService.getCustomer(id));
         return res;
+    }
+
+    @GetMapping("/customersCounts")
+    public CommonResponse getCustomersCount() {
+        return CommonResponse.generateResponse(CommonResponse.ResponseType.SUCCESS,"",this.customerService.getCustomerCount());
     }
 
 
